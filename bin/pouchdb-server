@@ -152,6 +152,23 @@ var args = nomnom
 
 var app = express();
 
+app.use(function(req, res, next) {
+
+var ips = [
+'x.x.x.x'
+];
+
+if (ips.indexOf(req.ip) !== -1) {
+  next(); 
+}       
+else if (req.headers.referer && req.headers.referer.indexOf('x.x.com') !== -1) {
+  next(); 
+}       
+else {  
+  res.status(403).end();
+}       
+});
+
 var pouchDBApp = require('express-pouchdb')({
   configPath: getArg('config')
 });
